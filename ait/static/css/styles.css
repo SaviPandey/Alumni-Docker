@@ -1,0 +1,168 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Card */
+  .card {
+    max-width: 900px;
+    margin: 2rem auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    padding: 2rem;
+  }
+  
+  /* Card Header */
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .card p {
+    color: #555;
+  }
+  
+  /* Form Controls */
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-control,
+  .form-select,
+  .form-check-input {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .is-invalid {
+    border-color: #dc3545;
+  }
+  
+  .invalid-feedback {
+    display: block;
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+  
+  /* Custom Input Styles */
+  .input-group {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .input-group .form-select {
+    flex-basis: 20%;
+  }
+  
+  .input-group .form-control {
+    flex-grow: 1;
+  }
+  
+  .form-check-input {
+    margin-top: 0.3rem;
+  }
+  
+  /* Submit Button */
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 1rem;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Links */
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Optional Address Field */
+  #optionalAddressField {
+    margin-top: 1rem;
+  }
+  
+  #optionalAddressField input {
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Terms & Conditions */
+  .form-check {
+    margin-top: 1rem;
+  }
+  
+  .invalid-feedback {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .card {
+      padding: 1.5rem;
+    }
+  
+    .card-title {
+      font-size: 1.25rem;
+    }
+  
+    .form-group {
+      margin-bottom: 1rem;
+    }
+  
+    .input-group {
+      flex-direction: column;
+    }
+  
+    .input-group .form-select {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+  }
+  
+  /* Styling the Footer */
+  small {
+    color: #888;
+    font-size: 0.875rem;
+  }
+  
+  small a {
+    color: #007bff;
+  }
+  
+  small a:hover {
+    text-decoration: underline;
+  }
+  

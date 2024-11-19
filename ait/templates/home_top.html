@@ -1,0 +1,248 @@
+{% extends './layout/base.html' %}
+{% block content %}
+
+<main id="main" class="main">
+
+  <!-- Page Title -->
+  <div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('home.home_latest' ) }}">Home</a></li>
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <section class="section dashboard">
+    <div class="row">
+
+      <!-- Left side columns -->
+      <div class="col-lg-8">
+        <div class="row">
+
+          <div class="col-12">
+            <div class="card">
+
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                  </li>
+
+                  <li><a class="dropdown-item" href="/home/latest">Latest</a></li>
+                </ul>
+              </div>
+
+              <div class="card-body">
+                <h5 class="card-title">Hiring <span>/post</span></h5>
+              </div>
+            </div>
+          </div><!-- End View Post -->
+
+          <!-- View Post-->
+          {% for post in posts %}
+          <div class="col-12">
+            <div class="card">
+
+              <div class="card-body">
+
+                <!-- view post box start -->
+                <div class="d-flex flex-column comment-section mt-3">
+                  <div class="bg-white p-2">
+
+                    <div class="d-flex flex-row user-info ">
+                      {% with profile_url = post.to_dict()['profile_url'] %}
+                      {% if profile_url == '' %}
+                      <img class="rounded-circle me-2"
+                        src="{{ url_for('static',filename='/profile_pic/default.webp' ) }}" width="40" height="40">
+                      {% else %}
+                      <img class="rounded-circle me-2" src="/static/profile_pic/{{post.to_dict()['profile_url']}}"
+                        width="40" height="40">
+                      {% endif %}
+                      {% endwith %}
+
+                      <div class="d-flex flex-column justify-content-start ml-2 ">
+                        {% if post.to_dict()['role'] == 'Student' %}
+                        <a href="/user/Student/{{post.to_dict()['username']}}"><span
+                            class="d-block font-weight-bold name">{{post.to_dict()['username']}}</span>
+                        </a>
+                        {% endif %}
+                        {% if post.to_dict()['role'] == 'Alumini' %}
+                        <a href="/user/Alumini/{{post.to_dict()['username']}}"><span
+                            class="d-block font-weight-bold name">{{post.to_dict()['username']}}</span>
+                        </a>
+                        {% endif %}
+                        <span class="date text-black-50">Shared publicly -
+                          {{post.to_dict()['date_created'].strftime('%d/%m/%Y')}}</span>
+                      </div>
+                    </div>
+                    <div class="mt-2">
+                      <h6 class="card-title">{{post.to_dict()['title']}}</h6>
+                      <pre class="comment-text">{{ post.to_dict()['content'] }}</pre>
+                      <!-- <p class="comment-text">{{post.to_dict()['content']}}</p> -->
+                      {% if post.to_dict()['media'].split('.')[1] != 'mp4' %}
+                      <img src="{{ url_for('static', filename='media/'+post.to_dict()['media'] ) }}" alt=""
+                        class="img-fluid">
+                      {% else %}
+                      <video width="100%" controls>
+                        <source src="{{ url_for('static', filename='media/'+post.to_dict()['media'] ) }}"
+                          type="video/mp4">
+                      </video>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="bg-white">
+                    <div class="d-flex flex-row fs-12">
+                      <form action="/like/{{post.to_dict()['post_id']}}" method="post">
+                        <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"></i>
+                          <span class="">
+                            <button class=" btn-outline-primary btn-sm btn shadow-none"
+                              type="submit">Like({{post.to_dict()['likes']|length}})
+                            </button>
+                          </span>
+                        </div>
+
+                      </form>
+                      <div class="like p-2 cursor"><i class="fa fa-commenting-o"></i><span class="ml-1"><a class=""
+                            data-bs-toggle="collapse" href="#{{post.to_dict()['post_id']}}" role="button"
+                            aria-expanded="false">
+                            <button class=" btn-outline-primary btn-sm btn shadow-none">
+                              Comment({{post.to_dict()['comments']|length}})</button>
+                          </a></span>
+                      </div>
+                      <!-- <div class="like p-2 cursor"><i class="fa fa-share"></i><span class="ml-1">Share</span>
+                      </div> -->
+                    </div>
+                  </div>
+                  <div class="bg-light p-2">
+                    <form action="/comment/{{post.to_dict()['post_id']}}" method="post">
+                      <div class="d-flex flex-row align-items-start">
+                        {% with profile_url = current_user.profile_url %}
+                        {% if current_user.profile_url == '' %}
+                        <img class="rounded-circle me-2"
+                          src="{{ url_for('static',filename='/profile_pic/default.webp' ) }}" width="40" height="40">
+                        {% else %}
+                        <img class="rounded-circle me-2" src="/static/profile_pic/{{current_user.profile_url}}"
+                          width="40" height="40">
+                        {% endif %}
+                        {% endwith %}
+                        <textarea class="form-control ml-1 shadow-none textarea" name="comment"></textarea>
+                      </div>
+                      <div class="mt-2 text-right d-flex justify-content-end">
+                        <button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="submit">Post
+                          Comment
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <!-- comment box starts -->
+                <div class="collapse" id="{{post.to_dict()['post_id']}}">
+                  <div class="card card-body mt-3 ">
+                    <div class="card-body mt-3">
+                      {% if post.to_dict()['comments'] %}
+                      {% with comments= post.to_dict()['comments'] %}
+                      {% for key,comment in comments.items() %}
+                      <!-- comment content box start -->
+                      <div class="d-flex flex-row user-info ">
+
+                        <div class="d-flex flex-row justify-content-start ml-2 ">
+                          <p style=" color:rgb(28, 176, 250);">
+                            {{comment['username']}} </p><span class="d-block font-weight-bold name">
+                          </span><span class="date text-black-50">" commented -
+                            {{comment['date_created'].strftime('%d/%m/%Y')}}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="mt-2">
+                        <p class="comment-text ">
+                          {{comment['comment']}}
+                        </p>
+                      </div>
+                      <!-- comment content box ends -->
+                      {% endfor %}
+                      {% endwith %}
+
+                      {% else %}
+                      <div class="mt-2">
+                        <p class="comment-text">No Comment.</p>
+                      </div>
+                      {% endif %}
+
+                    </div>
+                  </div>
+                </div>
+                <!-- comment box ends -->
+
+                <!-- view post box ends -->
+              </div>
+            </div>
+          </div><!-- End View Post -->
+          {% endfor %}
+
+        </div>
+      </div><!-- End Left side columns -->
+
+      <!-- Right side columns -->
+      <div class="col-lg-4">
+        <!-- News & Updates Traffic -->
+        <div class="card">
+          <div class="card-body pb-0">
+            <h5 class="card-title">News &amp; Updates <span>| Today</span></h5>
+
+
+            <div class="post-item clearfix">
+              <h6><a href="https://www.aitpune.com/eventsandfunctions/Article-KPIT-Sparkle.pdf">AIT has now won the
+                  top
+                  prize for the second straight year in KPIT Sparkle</a></h6>
+              <p>Team Aqua of Army Institute of Technology (AIT), Pune, won the Platinum award of Rs.
+                10,00,000 for developing a Vertical Axis Water Turbine (VAWT), which is 24% more efficient
+                than a conventional system. The turbine can be used...</p>
+            </div>
+            <div class="post-item clearfix">
+              <h6><a href="https://alumni.aitpune.edu.in/newsroom/news/AIT-Day-2021---Successful-Entrepreneur-Awards.dz
+                    ">AIT Day 2021 - Successful Entrepreneur Awards</a></h6>
+              <p>This year's Successful Entrepreneur Award jointly goes to Baljit Singh , 2000 batch , Co Founder and
+                CEO of MTatva and Simbo and Praveen Prakash , 2000 batch , Co Founder and CTO at MTatva and Simbo ....
+              </p>
+            </div>
+            <div class="post-item clearfix">
+              <h6><a
+                  href="https://alumni.aitpune.edu.in/newsroom/news/AIT-Start-up-Diaries-Army-Institute-of-Technology-features-again-on-DNA-Pune-page.dz">Pune
+                  residents can now share a ride and make a quick buck! ......LetsRide</a></h6>
+              <p>This 30-year-old wants to solve Pune’s traffic woes through his start-up called Let’s Ride. A
+                graduate
+                from the Army Institute of Technology, Pune, he wants to facilitate...</p>
+            </div>
+            <div class="post-item clearfix">
+              <h6><a href="https://alumni.aitpune.edu.in/newsroom/news/Alumni-Success-Stories-Saurabh.dz">Alumni
+                  Success Stories (Saurabh)-Nativsouls</a></h6>
+              <p>To help artisans and craftsmen who are constantly duped by middlemen and big corporate houses led to
+                formation of Nativsouls...</p>
+            </div>
+            <div class="post-item clearfix">
+              <h6><a href="https://alumni.aitpune.edu.in/newsroom/news/Alumni-Success-Stories-Rishi-Tiwari.dz">Alumni
+                  Success Stories (Rishi Tiwari)</a></h6>
+              <p>Mr. Rishi Tiwari ….. Senior Manager, Unilever, Bangalore, 2001 Mechanical.
+                It has been more than a decade since I left the environs of Army Institute of Technology in 2001 and
+                have...</p>
+            </div>
+
+          </div><!-- End sidebar recent posts-->
+
+        </div>
+      </div><!-- End News & Updates -->
+
+    </div><!-- End Right side columns -->
+
+    </div>
+  </section>
+
+</main><!-- End #main -->
+
+<!-- home js starts -->
+<script src="{{ url_for('static', filename = 'assets/js/home.js' ) }}"></script>
+{% endblock content%}}

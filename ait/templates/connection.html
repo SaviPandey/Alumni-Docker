@@ -1,0 +1,139 @@
+{% extends './layout/base.html' %}
+{% block content %}
+
+<main id="main" class="main">
+
+    <!-- Page Title -->
+    <div class="pagetitle">
+        <h1>Connection</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('home.home_latest' ) }}">Home</a></li>
+                <li class="breadcrumb-item active">Connection</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+        <div class="row">
+
+            <!-- Left side columns -->
+            <div class="col-lg-8">
+                <div class="row">
+
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Following <span>/{{current_user.username}}</span></h5>
+                            </div>
+                        </div>
+                    </div><!-- End View Post -->
+
+                    <!-- View Post-->
+                    {% if type %}
+                    {% for t in type.values() %}
+                    <div class="col-12">
+                        <div class="card">
+
+                            <div class="card-body">
+
+                                <!-- view post box start -->
+                                <div class="d-flex flex-column comment-section mt-3">
+                                    <div class="bg-white p-2 ">
+
+                                        <div class="d-flex flex-row user-info  ">
+                                            
+                                            {% with profile_url = t['profile_url'] %}
+                                            {% if profile_url == '' %}
+                                            <img class="rounded-circle me-2"
+                                              src="{{ url_for('static',filename='/profile_pic/default.jpeg' ) }}" width="40" height="40">
+                                            {% else %}
+                                            <img class="rounded-circle me-2" src="{{t['profile_url']}}" width="40" height="40">
+                                            {% endif %}
+                                            {% endwith %}
+
+                                            <div class="d-flex flex-column justify-content-start ml-2 ">
+                                                <a href="/user/Alumini/{{t['username']}}"><span
+                                                        class="d-block font-weight-bold name">{{t['username']}}</span>
+                                                </a>
+                                                <span class="date text-black-50">Followed on -
+                                                    {{t['created_at'].strftime('%d/%m/%Y')}}</span>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <!-- view post box ends -->
+                            </div>
+                        </div>
+                    </div><!-- End View Post -->
+                    {% endfor %}
+                    {% else %}
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="mt-4">You are not following anyone. Follow now !!!</h5>
+                            </div>
+                        </div>
+                    </div><!-- End View Post -->
+                    {% endif %}
+
+                </div>
+            </div><!-- End Left side columns -->
+
+            <!-- Right side columns -->
+            <div class="col-lg-4">
+                <!-- News & Updates Traffic -->
+                <div class="card">
+                    <div class="card-body pb-0">
+                        <h6 class="card-title">News &amp; Updates <span>| Today</span></h6>
+                        <div class="post-item clearfix">
+                          <h6><a href="https://www.apsit.edu.in/">APSIT Student Makes DTE Web Portal </a></h6>
+                          <p>We are thrilled to announce a significant achievement by our talented APSIT students! The NBA Status Portal, a groundbreaking project developed for the Maharashtra Government, showcases the innovative spirit and technical prowess of our students....</p>
+                        </div>
+                        <div class="post-item clearfix">
+                          <h6><a href="https://www.apsit.edu.in/">
+                                🏆 Congratulations to Our Thane Smart City Hackathon and Start-up Pitch Fest Winners! 🏆 
+                              </a>
+                          </h6>
+                          <p>🚦 Priority Based Traffic Manipulation (Safety & Security):
+                            Winners: Arun Mathai & Atharva Sunil Dhamankar (SE Comps)
+                            ♻️ E-waste Management using Blockchain (Solid Waste Management):
+                              Winners: Anuj Mishra & Ishan Sathe (BE Comps).....
+                          </p>
+                        </div>
+                        <div class="post-item clearfix">
+                          <h6><a
+                              href="https://www.apsit.edu.in/">APSIT Teams Win 1st Prize in Smart India Hackathon 2023.</a></h6>
+                          <p>APSIT celebrates as two teams clinch the top prize of Rs. 1 Lakh each in the 2023 Smart India Hackathon, hosted by the Government of India. The victory showcases APSIT's innovation and technological excellence...</p>
+                        </div>
+                        <div class="post-item clearfix">
+                          <h6><a href="https://www.apsit.edu.in/">Alumni
+                              Success Stories (Saurabh)-Nativsouls</a></h6>
+                          <p>To help artisans and craftsmen who are constantly duped by middlemen and big corporate houses led to
+                            formation of Nativsouls...</p>
+                        </div>
+                        <div class="post-item clearfix">
+                          <h6><a href="https://www.apsit.edu.in/">🎉 Congratulations to Our International Placement Achievers! 🎉</a></h6>
+                          <p>A. P. Shah Institute of Technology, Thane is elated to announce that our talented B.E. students from the Batch of 2023-24 have achieved exceptional international placements at JTP Co. Ltd.!👏 Heartiest congratulations to: Harmit Saini
+                            Devanshu Mahapatra
+                            Akshaykumar Jain
+                            Siddharth Singh...</p>
+                        </div>
+            
+                      </div><!-- End sidebar recent posts-->
+
+                </div>
+            </div><!-- End News & Updates -->
+
+        </div><!-- End Right side columns -->
+
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+<!-- home js starts -->
+<script src="{{ url_for('static', filename = 'assets/js/home.js' ) }}"></script>
+{% endblock content%}}

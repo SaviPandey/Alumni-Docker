@@ -1,0 +1,467 @@
+{% extends "./layout/auth_layout.html" %}
+
+{% block content %}
+<main>
+  <div class="container">
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 col-md-10 col-12 d-flex flex-column align-items-center justify-content-center">
+
+            <div class="d-flex justify-content-center py-4">
+              <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="{{ url_for('static',filename='assets/img/logo.png' )}}" alt="">
+                <span class="d-none d-lg-block">APSIT</span>
+              </a>
+            </div><!-- End Logo -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} mx-auto" role="alert">
+              {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="pt-4 pb-2">
+                  <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
+                  <p class="text-center small">Enter your personal details to create an account</p>
+                </div>
+
+                <form method="POST" action="" class="row g-4 needs-validation" novalidate>
+                  {{ form.hidden_tag() }}
+
+                  <!-- Email -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      {{ form.email.label(class="form-label") }}
+                      <input 
+                        class="form-control form-control-lg {% if form.email.errors %}is-invalid{% endif %}" 
+                        type="email" 
+                        name="email" 
+                        id="email" 
+                        value="{{ form.email.data }}" 
+                        {% if form.email.data %}readonly{% endif %}>
+                      {% for error in form.email.errors %}
+                      <div class="invalid-feedback">{{ error }}</div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  
+
+
+                  <!-- Password -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label class="form-label" for="password">
+                        {{ form.password.label }} <span class="text-danger">*</span>
+                      </label>
+                      <input class="form-control form-control-lg {% if form.password.errors %}is-invalid{% endif %}" type="password" name="password" id="password" placeholder="Create Password" required>
+                      {% for error in form.password.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <!-- Confirm Password -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label class="form-label" for="confirm_password">
+                        {{ form.confirm_password.label }} <span class="text-danger">*</span>
+                      </label>
+                      {% if form.confirm_password.errors %}
+                        {{ form.confirm_password(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                          {% for error in form.confirm_password.errors %}
+                            <span>{{ error }}</span>
+                          {% endfor %}
+                        </div>
+                      {% else %}
+                        {{ form.confirm_password(class="form-control form-control-lg") }}
+                      {% endif %}
+                    </div>
+                  </div>
+
+
+                  <!-- Full Name -->
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="form-label" for="full_name">
+                      {{ form.full_name.label }} <span class="text-danger">*</span>
+                    </label>
+                    <input class="form-control form-control-lg {% if form.full_name.errors %}is-invalid{% endif %}" type="text" name="full_name" id="full_name" placeholder="Enter Fullname" required>
+                    {% for error in form.full_name.errors %}
+                      <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                  </div>
+                </div>
+
+
+                  <!-- Gender -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label class="form-label" for="gender">
+                        {{ form.gender.label }} <span class="text-danger">*</span>
+                      </label>
+                      <select class="form-control form-control-lg {% if form.gender.errors %}is-invalid{% endif %}" name="gender" id="gender" required>
+                        <option value="" disabled selected class="text-muted">Select Gender</option>
+                        <option value="Male" {% if form.gender.data == 'Male' %}selected{% endif %}>Male</option>
+                        <option value="Female" {% if form.gender.data == 'Female' %}selected{% endif %}>Female</option>
+                        <option value="Other" {% if form.gender.data == 'Other' %}selected{% endif %}>Other</option>
+                      </select>
+                      {% for error in form.gender.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+
+               <!-- Branch -->
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  {{ form.branch.label(class="form-label") }}
+                  <span class="text-danger">*</span> <!-- Adding the red asterisk -->
+                  {{ form.branch(class="form-control form-control-lg {% if form.branch.errors %}is-invalid{% endif %}") }}
+                  {% for error in form.branch.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <!-- Graduation Year -->
+              <div class="col-12 col-md-6">
+                <div class="form-group">
+                  {{ form.graduation_year.label(class="form-label") }}
+                  <span class="text-danger">*</span> <!-- Adding the red asterisk -->
+                  {{ form.graduation_year(class="form-control form-control-lg {% if form.graduation_year.errors %}is-invalid{% endif %}") }}
+                  {% for error in form.graduation_year.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                  {% endfor %}
+                </div>
+              </div>
+
+                <!-- Phone Number 1 -->
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="form-label" for="phone_number1">
+                    {{ form.phone_number1.label }} <span class="text-danger">*</span>
+                  </label>
+                  <input class="form-control form-control-lg {% if form.phone_number1.errors %}is-invalid{% endif %}" 
+                        type="text" name="phone_number1" id="phone_number1" 
+                        placeholder="Phone number" required>
+                  
+                  {% for error in form.phone_number1.errors %}
+                  <div class="invalid-feedback">{{ error }}</div>
+                  {% endfor %}
+                </div>
+              </div>
+
+
+                  <!-- Phone Number 2 -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      {{ form.phone_number2.label(class="form-label") }}
+                      <div class="input-group">
+                      
+                        <select class="form-select form-control-lg bg-primary text-white {% if form.country_code.errors %}is-invalid{% endif %}" 
+                                id="country_code" name="country_code" required>
+                          <option value="+91" selected>+91 India</option>
+                          <option value="+1">+1 USA</option>
+                          <option value="+44">+44 UK</option>
+                          <option value="+61">+61 Australia</option>
+                          <option value="+49">+49 Germany</option>
+                          <option value="+55">+55 Brazil</option>
+                        </select>
+                        
+                        <input class="form-control form-control-lg {% if form.phone_number2.errors %}is-invalid{% endif %}" 
+                              type="text" name="phone_number2" id="phone_number2" 
+                              placeholder="Optional" required>
+                      </div>
+
+                      {% for error in form.phone_number2.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+
+                <!-- Address -->
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="form-label" for="address">
+                      {{ form.address.label }} <span class="text-danger">*</span>
+                    </label>
+                    <input class="form-control form-control-lg {% if form.address.errors %}is-invalid{% endif %}" 
+                          type="text" name="address" id="address" 
+                          placeholder="123 Main St, City, Country" required>
+                    {% for error in form.address.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                  </div>
+                </div>
+
+                <!-- City -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label" for="city">
+                      {{ form.city.label }} <span class="text-danger">*</span>
+                    </label>
+                    <input class="form-control form-control-lg {% if form.city.errors %}is-invalid{% endif %}" 
+                          type="text" name="city" id="city" placeholder="Enter city" required>
+                    {% for error in form.city.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                  </div>
+                </div>
+
+                <!-- State -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label" for="state">
+                      {{ form.state.label }} <span class="text-danger">*</span>
+                    </label>
+                    <input class="form-control form-control-lg {% if form.state.errors %}is-invalid{% endif %}" 
+                          type="text" name="state" id="state" placeholder="Enter state" required>
+                    {% for error in form.state.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                  </div>
+                </div>
+
+                                    
+                 <!-- Another Address Field -->
+                  <div class="col-12">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="optionalAddressCheckbox" name="address-outside" onclick="toggleOptionalAddress()">
+                      <label class="form-check-label" for="optionalAddressCheckbox">Add Secondary Address (Outside India)</label>
+                    </div>
+                  </div>
+
+                  <!-- Optional Address Fields, Initially Hidden -->
+                  <div class="col-12" id="optionalAddressField" style="display: none;">
+                    <div class="form-group">
+                      <label for="outside-address" class="form-label">Optional Address</label>
+                      <input class="form-control form-control-lg" type="text" id="optional-address" name="optional-address" placeholder="1234 Elm St, New York">
+                    </div>
+
+                    <!-- City and State in Same Row for Optional Address -->
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="optional-city" class="form-label">City</label>
+                          <input class="form-control form-control-lg {% if form.optional_city.errors %}is-invalid{% endif %}" 
+                                type="text" id="optional-city" name="optional-city" placeholder="Enter city">
+                          {% for error in form.optional_city.errors %}
+                          <div class="invalid-feedback">{{ error }}</div>
+                          {% endfor %}
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="optional-state" class="form-label">State</label>
+                          <input class="form-control form-control-lg {% if form.optional_state.errors %}is-invalid{% endif %}" 
+                                type="text" id="optional-state" name="optional-state" placeholder="Enter state">
+                          {% for error in form.optional_state.errors %}
+                          <div class="invalid-feedback">{{ error }}</div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <script>
+                    function toggleOptionalAddress() {
+                      var checkbox = document.getElementById("optionalAddressCheckbox");
+                      var addressField = document.getElementById("optionalAddressField");
+
+                      if (checkbox.checked) {
+                        addressField.style.display = "block";  // Show optional address fields
+                      } else {
+                        addressField.style.display = "none";   // Hide optional address fields
+                      }
+                    }
+                  </script>
+
+
+                  <!-- Work Experience Section -->
+                  <h5 class="card-title text-center pb-0 fs-4">Work Experience</h5>
+
+                  <div class="col-12">
+                    <div class="form-group">
+                      {{ form.company_name.label(class="form-label") }}
+                      <input class="form-control form-control-lg {% if form.company_name.errors %}is-invalid{% endif %}" type="text" name="company_name" id="company_name"  placeholder="Enter company name">
+                      {% for error in form.company_name.errors %}
+                      <div class="invalid-feedback">{{ error }}</div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="form-group">
+                      {{ form.designation.label(class="form-label") }}
+                      <input class="form-control form-control-lg {% if form.designation.errors %}is-invalid{% endif %}" type="text" name="designation" id="designation" placeholder="Enter designation">
+                      {% for error in form.designation.errors %}
+                      <div class="invalid-feedback">{{ error }}</div>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <!-- Joining Date -->
+                  <div class="col-12">
+                    <div class="form-group">
+                        <label class="form-label" for="joining_date">{{ form.joining_date.label }}</label>
+                        
+                        <!-- Use a month and year picker with HTML5 input type -->
+                        <input class="form-control form-control-lg {% if form.joining_date.errors %}is-invalid{% endif %}" 
+                               type="month" name="joining_date" id="joining_date" 
+                               value="{{ form.joining_date.data.strftime('%Y-%m') if form.joining_date.data else '' }}" 
+                               placeholder="Select joining date">
+                        
+                        {% for error in form.joining_date.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+
+                  <!-- Technology Stack -->
+                  <!-- <div class="col-12">
+                    <div class="form-group">
+                        {{ form.technology.label(class="form-label") }}
+                        <input class="form-control form-control-lg {% if form.technology.errors %}is-invalid{% endif %}" 
+                               id="technology" name="technology" placeholder="Eg: MERN stack, Python, Java" >
+                        {% for error in form.technology.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div> -->
+
+                <div class="col-12">
+                  <div class="form-group">
+                      <label class="form-label" for="technology">
+                          {{ form.technology.label }} <span class="text-danger">*</span>
+                      </label>
+              
+                      <!-- Tech Stacks Checkbox Group -->
+                      <div class="row">
+                          <!-- MERN Stack Checkbox -->
+                          <div class="col-12 col-md-6 col-lg-4 form-check">
+                              <input class="form-check-input" type="checkbox" id="mern-stack" name="technology" value="MERN Stack"
+                                  {% if form.technology.data and 'MERN Stack' in form.technology.data %}checked{% endif %}>
+                              <label class="form-check-label" for="mern-stack">MERN Stack</label>
+                          </div>
+              
+                          <!-- Python Checkbox -->
+                          <div class="col-12 col-md-6 col-lg-4 form-check">
+                              <input class="form-check-input" type="checkbox" id="python" name="technology" value="Python"
+                                  {% if form.technology.data and 'Python' in form.technology.data %}checked{% endif %}>
+                              <label class="form-check-label" for="python">Python</label>
+                          </div>
+              
+                          <!-- Java Checkbox -->
+                          <div class="col-12 col-md-6 col-lg-4 form-check">
+                              <input class="form-check-input" type="checkbox" id="java" name="technology" value="Java"
+                                  {% if form.technology.data and 'Java' in form.technology.data %}checked{% endif %}>
+                              <label class="form-check-label" for="java">Java</label>
+                          </div>
+              
+                          <!-- Flutter Checkbox -->
+                          <div class="col-12 col-md-6 col-lg-4 form-check">
+                              <input class="form-check-input" type="checkbox" id="flutter" name="technology" value="Flutter"
+                                  {% if form.technology.data and 'Flutter' in form.technology.data %}checked{% endif %}>
+                              <label class="form-check-label" for="flutter">Flutter</label>
+                          </div>
+              
+                          <!-- MEAN Stack Checkbox -->
+                          <div class="col-12 col-md-6 col-lg-4 form-check">
+                              <input class="form-check-input" type="checkbox" id="mean-stack" name="technology" value="MEAN Stack"
+                                  {% if form.technology.data and 'MEAN Stack' in form.technology.data %}checked{% endif %}>
+                              <label class="form-check-label" for="mean-stack">MEAN Stack</label>
+                          </div>
+              
+                          <!-- Django Checkbox -->
+                          <div class="col-12 col-md-6 col-lg-4 form-check">
+                              <input class="form-check-input" type="checkbox" id="django" name="technology" value="Django"
+                                  {% if form.technology.data and 'Django' in form.technology.data %}checked{% endif %}>
+                              <label class="form-check-label" for="django">Django</label>
+                          </div>
+              
+                          <!-- Other Option with Input -->
+                          <div class="col-12 form-check">
+                              <input class="form-check-input" type="checkbox" id="other-tech" name="technology" value="Other"
+                                  {% if form.technology.data and 'Other' in form.technology.data %}checked{% endif %}
+                                  onclick="toggleOtherTechInput()">
+                              <label class="form-check-label" for="other-tech">Other (Please specify)</label>
+                          </div>
+                      </div>
+              
+                      <!-- Other tech input field, initially hidden -->
+                      <div class="form-group" id="other-tech-input" style="display: none;">
+                          <label for="other-tech-stack" class="form-label">Please specify your tech stack:</label>
+                          <input class="form-control form-control-lg" type="text" id="other-tech-stack" name="other-tech-stack"
+                                 placeholder="Enter your technology stack" 
+                                 {% if form.technology.data and 'Other' in form.technology.data %}
+                                     value="{{ form.other_tech_stack.data }}" 
+                                 {% endif %}>
+                      </div>
+              
+                      {% for error in form.technology.errors %}
+                          <div class="invalid-feedback">{{ error }}</div>
+                      {% endfor %}
+                  </div>
+              </div>
+              
+              <script>
+                  // Show the "Other" input field if the checkbox is checked
+                  function toggleOtherTechInput() {
+                      var otherCheckbox = document.getElementById("other-tech");
+                      var otherInput = document.getElementById("other-tech-input");
+              
+                      if (otherCheckbox.checked) {
+                          otherInput.style.display = "block";
+                      } else {
+                          otherInput.style.display = "none";
+                      }
+                  }
+              
+                  // Run the function on page load to check if the "Other" checkbox was already checked
+                  window.onload = function() {
+                      toggleOtherTechInput(); 
+                  };
+              </script>
+              
+              
+              
+              
+
+                  <div class="col-12 mt-3">
+                    <div class="form-check">
+                      <input class="form-check-input" name="terms" type="checkbox" id="acceptTerms" required>
+                      <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and
+                          conditions</a></label>
+                      <div class="invalid-feedback">You must agree before submitting.</div>
+                    </div>
+                  </div>
+                  <div class="col-12 mt-2">
+                    {{ form.submit(class="btn btn-primary w-100") }}
+                  </div>
+
+                  <div class="col-12 mt-2">
+                    <p class="small mb-0">Already have an account? <a href="{{ url_for('authentication.login') }}">Log in</a></p>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock content %}
