@@ -5,18 +5,7 @@ from datetime import datetime
 
 notification_bp = Blueprint('notification', __name__)
 
-# # Dummy data for notifications
-# notifications = [
-#     "New message from Alice",
-#     "Reminder: Meeting at 3 PM",
-#     "Your profile was viewed",
-#     "System update available",
-# ]
-
 @notification_bp.route('/notifications',methods = ['GET'])
-# def get_notifications():
-#     print(notifications)
-#     return jsonify(notifications=notifications)
 def fetch_notifications():
     """
     Fetches notifications for the logged-in user.
@@ -30,23 +19,6 @@ def fetch_notifications():
         notifications = []
 
     return jsonify({'notifications': notifications})
-
-
-# @notification_bp.route('/notifications/mark-read', methods=['POST'])
-# def mark_notifications_as_read():
-#     """
-#     Marks all notifications as read for the logged-in user.
-#     """
-#     notification_ref = db_fire.collection('notifications').document(current_user.username)
-#     notification_doc = notification_ref.get()
-#
-#     if notification_doc.exists:
-#         notifications = notification_doc.to_dict().get('notifications', [])
-#         for notification in notifications:
-#             notification['read'] = True
-#         notification_ref.set({'notifications': notifications}, merge=True)
-#
-#     return jsonify({'message': 'Notifications marked as read'})
 
 
 @notification_bp.route('/notifications/mark-read', methods=['POST'])
@@ -65,11 +37,11 @@ def mark_notifications_as_read():
 
         notifications = notification_doc.to_dict().get('notifications', [])
 
-        # Mark all notifications as read
+        
         for notification in notifications:
             notification['read'] = True
 
-        # Update notifications in Firestore
+       
         notification_ref.set({'notifications': notifications}, merge=True)
 
         return jsonify({
