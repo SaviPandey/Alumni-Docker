@@ -147,6 +147,36 @@
         </form>
       </div>
 
+
+       <!-- Notification Bell -->
+    <div class="position-relative">
+      <button id="notificationBell" class="btn btn-light position-relative" onclick="toggleNotificationPopup()">
+        <i class="bi bi-bell" style="font-size: 1.5rem;"></i>
+        <span id="notificationCount"
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+          style="font-size: 0.7rem;">
+
+        </span>
+      </button>
+
+      <!-- Notification Popup -->
+      <div id="notificationPopup" class="position-absolute top-100 end-0 mt-1 p-3 bg-white shadow rounded d-none"
+        style="width: 300px; z-index: 1000;">
+        <h6 class="d-flex justify-content-between align-items-center">
+          Notifications
+          <button class="btn btn-sm btn-outline-primary" onclick="markNotificationsAsRead()">Mark All as Read</button>
+        </h6>
+        <hr>
+        <ul class="list-unstyled" id="notificationList">
+          <!-- Notifications will be dynamically populated here -->
+        </ul>
+      </div>
+    </div>
+
+
+
+
+
       <!-- End Search Bar -->
 
       <nav class="header-nav ms-auto">
