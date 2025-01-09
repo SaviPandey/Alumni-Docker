@@ -50,7 +50,7 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'authentication.login'
 login_manager.login_message_category = 'info'
 
-from ait.views import authentication, chat, connection, error_handling, home, post, profile
+from ait.views import authentication, chat, connection, error_handling, home, post, profile,notification
 
 app.register_blueprint(authentication.authentication)
 app.register_blueprint(chat.chat)
@@ -59,3 +59,4 @@ app.register_blueprint(error_handling.error_handling)
 app.register_blueprint(home.home)
 app.register_blueprint(post.post)
 app.register_blueprint(profile.profile)
+app.register_blueprint(notification.notification_bp)
