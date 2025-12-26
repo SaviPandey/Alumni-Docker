@@ -59,3 +59,12 @@ app.register_blueprint(error_handling.error_handling)
 app.register_blueprint(home.home)
 app.register_blueprint(post.post)
 app.register_blueprint(profile.profile)
+
+# Health check endpoint for monitoring
+@app.route('/health')
+def health_check():
+    return {
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'service': 'Alumni Portal'
+    }
